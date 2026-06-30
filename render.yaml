@@ -1,0 +1,21 @@
+# Render Blueprint (optional)
+# Note: Render free web services sleep after ~15 min inactivity.
+# For a always-on demo URL, prefer Railway (see DEPLOY.md).
+
+services:
+  - type: web
+    name: erp-demo-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: docker
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false

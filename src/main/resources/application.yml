@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: erp-demo
+  datasource:
+    url: jdbc:mysql://localhost:3308/erp_ar?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: erp
+    password: erp_secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+
+erp:
+  jwt:
+    secret: dev-secret-change-in-production-must-be-at-least-256-bits-long!!
+    expiration-ms: 86400000
+
+logging:
+  level:
+    com.acme.erp: INFO
+
+springdoc:
+  swagger-ui:
+    persist-authorization: true
+    display-request-duration: true
+  show-actuator: false
