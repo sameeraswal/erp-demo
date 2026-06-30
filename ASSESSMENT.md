@@ -470,8 +470,6 @@ In the **Gaana+** payment platform, a concurrency issue allowed the same coupon 
 
 ## 4.3 Period-End Close Experience
 
-## 4.3 Period-End Close Experience
-
 ### Revenue Reporting & Financial Close Automation
 
 **Project:** Revenue Data Processing and Financial Close Systems
