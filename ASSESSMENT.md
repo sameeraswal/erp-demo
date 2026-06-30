@@ -405,19 +405,123 @@ If the process crashes mid-transaction, MySQL/InnoDB rolls back atomically — n
 
 ## 4.1 Financial/ERP System Built
 
-At a mid-market SaaS company, I led the design and implementation of a subscription billing and revenue recognition module integrated with NetSuite. The system handled multi-entity invoicing across US and EU subsidiaries, automated ASC 606 revenue schedules for annual contracts, and reduced month-end close from 12 days to 5 days. The AR subledger processed $50M+ annually with automated bank reconciliation, and the GL integration eliminated manual journal entries that had previously required 2 FTEs of accounting work.
+### Times Internet – Gaana+ Subscription Platform
+**Project:** Premium Subscription & Billing Platform
+
+**Responsibilities**
+- Built the subscription platform powering **Gaana+** premium memberships.
+- Developed features for subscription lifecycle management, including activation, renewal, and cancellation.
+- Integrated payment gateways to support seamless premium purchases.
+- Enabled premium user acquisition through subscription-based monetization.
+
+**Business Impact**
+- Supported a scalable subscription business model for millions of users.
+- Improved payment reliability and subscription management.
+
+---
+
+### Snapdeal – Seller Platform
+
+**Project:** Seller Management & Settlement Platform
+
+**Responsibilities**
+- Developed and managed the seller platform for product listing and catalog management.
+- Built payment settlement workflows for marketplace sellers.
+- Automated settlement calculations and payout processing.
+- Improved operational efficiency for seller onboarding and financial operations.
+
+**Business Impact**
+- Enabled reliable seller payment settlements at marketplace scale.
+- Reduced manual intervention in seller financial operations.
+
+---
+
+### Paisabazaar – Credit Report Payment Platform
+
+**Project:** Payment & Financial Reconciliation System
+
+**Responsibilities**
+- Built payment products for the Paisabazaar Credit Report platform.
+- Developed payment processing and transaction management services.
+- Implemented payment reconciliation and financial reporting workflows.
+- Designed revenue calculation and bookkeeping systems for accurate financial accounting.
+- Ensured end-to-end financial data integrity across payment and accounting processes.
+
+**Business Impact**
+- Automated reconciliation and revenue accounting.
+- Improved financial reporting accuracy and operational efficiency.
+- Enabled reliable financial operations for high-volume payment transactions.
 
 ## 4.2 Data Integrity Issue Resolved
 
-During a quarterly reconciliation, I discovered a $340K discrepancy between the AR subledger and GL caused by a race condition in concurrent payment processing. Two payment workers were allocating against the same invoice simultaneously, and the application-level balance check passed for both before either committed. I implemented database-level `SELECT FOR UPDATE` locking on invoice rows during payment allocation and added a nightly automated reconciliation report that compares subledger totals to GL balances. The fix prevented recurrence and the reconciliation job became a standard control adopted by the audit team.
+### Problem
+In the **Gaana+** payment platform, a concurrency issue allowed the same coupon code to be redeemed by multiple users simultaneously. A similar challenge existed in the **Spin the Wheel** reward system, where the same voucher code could be allocated to multiple users under high traffic conditions.
+
+### Solution
+- Designed and implemented a **distributed locking mechanism using Redis** to enforce exclusive access during coupon and voucher allocation.
+- Ensured that only one transaction could reserve and consume a coupon or voucher code at any given time.
+- Integrated the locking mechanism into the payment and reward redemption workflows without impacting system performance.
+
+### Result
+- Eliminated duplicate coupon and voucher allocations caused by race conditions.
+- Maintained **data integrity** and **transaction consistency** even during periods of high concurrency.
+- Improved customer trust by ensuring each promotional code was redeemed only once.
+- Delivered a scalable solution capable of handling enterprise-scale traffic.
 
 ## 4.3 Period-End Close Experience
 
-I owned the technical infrastructure for quarter-end close at a company preparing for SOX compliance. This involved building period-lock enforcement across 4 modules (AR, AP, GL, Inventory), creating an audit trail export API for external auditors, and implementing a close checklist workflow. The hardest challenge was handling "soft close" (no new entries) vs "hard close" (period locked) across distributed services — we solved this with an event-driven period status broadcast via Kafka that all services cached locally with version checks.
+## 4.3 Period-End Close Experience
+
+### Revenue Reporting & Financial Close Automation
+
+**Project:** Revenue Data Processing and Financial Close Systems
+
+### Responsibilities
+- Designed and managed batch jobs that pushed revenue data to centralized financial reporting systems.
+- Built data pipelines to process revenue generated from subscriptions, leads, and appointments.
+- Ensured accurate aggregation and synchronization of financial data across multiple downstream systems.
+- Developed scalable and fault-tolerant processing frameworks capable of handling high transaction volumes.
+- Implemented monitoring, retry mechanisms, and validation checks to ensure reliable data delivery.
+- Optimized processing jobs for performance, consistency, and operational resilience.
+
+### Enterprise Experience
+- **Times Internet:** Managed revenue processing pipelines for subscription-based products, ensuring timely and accurate financial reporting.
+- **Paisabazaar:** Built scalable systems to process and reconcile revenue generated from leads, appointments, and payment transactions.
+
+### Business Impact
+- Improved the reliability and accuracy of period-end financial reporting.
+- Reduced manual intervention through automated revenue processing pipelines.
+- Enabled timely financial close by ensuring complete and consistent revenue data.
+- Delivered a robust, scalable solution capable of processing enterprise-scale transaction volumes
 
 ## 4.4 Multi-Tenant Data Modeling Challenge
 
-At a multi-tenant HR/payroll platform, I designed the data model for customers who operated multiple legal entities with shared employees across entities. The challenge was supporting consolidated reporting while maintaining entity-level compliance (each entity needed its own tax IDs, bank accounts, and audit trails). I used a `LegalEntity` hierarchy with `tenant_id` scoping, entity-scoped sequences for document numbers, and a materialized view for consolidated balances. The key insight was that tenant isolation and entity isolation are orthogonal concerns — tenant is the security boundary, entity is the accounting boundary.
+### Multi-Tenant Authentication & SaaS Platform
+
+**Project:** Multi-Tenant Authentication Framework and Communication Platform
+
+### Responsibilities
+- Designed and implemented a **multi-tenant authentication framework** supporting multiple organizations on a single platform.
+- Built a flexible authentication system allowing each tenant to configure its own authentication strategy, authorization rules, and API security policies.
+- Enabled tenant-specific authentication mechanisms, credentials, and API route protection while maintaining complete isolation between organizations.
+- Designed the data model to support tenant isolation, extensibility, and future onboarding of new organizations with minimal configuration.
+
+### SaaS Communication Platform
+
+**Project:** Multi-Tenant Communication Service
+
+### Responsibilities
+- Built a communication platform that operates as a **Software-as-a-Service (SaaS)** solution.
+- Designed the service to be consumed by multiple external organizations from a shared infrastructure.
+- Implemented tenant-aware routing, configuration management, and secure data isolation.
+- Supported multiple communication channels and customizable workflows for different enterprise customers.
+- Developed the platform with scalability, high availability, and extensibility as core design principles.
+
+### Business Impact
+- Enabled rapid onboarding of new enterprise customers without requiring separate deployments.
+- Reduced operational overhead through a shared, configurable multi-tenant architecture.
+- Improved platform scalability while maintaining strong tenant isolation and security.
+- Created a reusable SaaS platform capable of serving multiple organizations with customized authentication and communication workflows.
 
 ---
 
