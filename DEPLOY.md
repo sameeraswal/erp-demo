@@ -41,17 +41,30 @@ git push -u origin main
 **4. Link database to API service**
 1. Click your **API service** (not MySQL)
 2. Go to **Variables** tab
-3. Click **+ New Variable** → **Add Reference** (or use raw vars):
+3. Set these variables (use **Add Reference** to pull from your MySQL service):
 
 | Variable | Value |
 |----------|--------|
-| `SPRING_PROFILES_ACTIVE` | `docker` |
+| `SPRING_PROFILES_ACTIVE` | `railway` |
 | `JWT_SECRET` | any random string 32+ chars |
-| `SPRING_DATASOURCE_URL` | `jdbc:mysql://${{MYSQL.MYSQLHOST}}:${{MYSQL.MYSQLPORT}}/${{MYSQL.MYSQLDATABASE}}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC` |
-| `SPRING_DATASOURCE_USERNAME` | `${{MYSQL.MYSQLUSER}}` |
-| `SPRING_DATASOURCE_PASSWORD` | `${{MYSQL.MYSQLPASSWORD}}` |
+| `MYSQLHOST` | `${{MySQL.MYSQLHOST}}` → resolves to `mysql.railway.internal` |
+| `MYSQLPORT` | `${{MySQL.MYSQLPORT}}` |
+| `MYSQLDATABASE` | `${{MySQL.MYSQLDATABASE}}` |
+| `MYSQLUSER` | `${{MySQL.MYSQLUSER}}` |
+| `MYSQLPASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
 
-> Replace `MYSQL` with your MySQL service name if Railway named it differently (e.g. `MySQL` → use `${{MySQL.MYSQLHOST}}`).
+**Or** set `SPRING_DATASOURCE_URL` explicitly (do **not** use `db` as hostname):
+
+```
+jdbc:mysql://mysql.railway.internal:3306/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+```
+
+> Replace `railway` with your actual database name from the MySQL service variables if different.
+> Replace `MySQL` in `${{MySQL.MYSQLHOST}}` if your MySQL service has a different name in Railway.
+
+**Important:** Remove any `SPRING_DATASOURCE_URL` that points to `jdbc:mysql://db:...` — `db` is only valid in local Docker Compose.
+
+**Connect services (recommended):** In Railway, open the API service → **Settings** → link/connect the MySQL service so `MYSQLHOST`, `MYSQLPORT`, etc. are injected automatically.
 
 **5. Expose public URL**
 1. API service → **Settings** → **Networking** → **Generate Domain**

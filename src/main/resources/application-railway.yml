@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: railway
+  datasource:
+    url: jdbc:mysql://${MYSQLHOST:mysql.railway.internal}:${MYSQLPORT:3306}/${MYSQLDATABASE:railway}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${MYSQLUSER:root}
+    password: ${MYSQLPASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: ${PORT:8080}
+
+erp:
+  jwt:
+    secret: ${JWT_SECRET}

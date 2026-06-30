@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://db:3306/erp_ar?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-    username: ${SPRING_DATASOURCE_USERNAME:erp}
-    password: ${SPRING_DATASOURCE_PASSWORD:erp_secret}
+    # Prefer SPRING_DATASOURCE_URL if set; otherwise build from Railway-injected MYSQL* vars.
+    # MYSQLHOST is mysql.railway.internal when MySQL is linked in Railway (not "db" from Docker Compose).
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${MYSQLHOST:db}:${MYSQLPORT:3306}/${MYSQLDATABASE:erp_ar}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:erp}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:erp_secret}}
   jpa:
     hibernate:
       ddl-auto: update

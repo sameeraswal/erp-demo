@@ -1,0 +1,15 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health"
+restartPolicyType = "on_failure"
+
+# Set in Railway dashboard (API service variables):
+#   SPRING_PROFILES_ACTIVE=railway
+#   JWT_SECRET=<random-32+-chars>
+#   MYSQLHOST=mysql.railway.internal   (or ${{MySQL.MYSQLHOST}} reference)
+#   MYSQLPORT, MYSQLDATABASE, MYSQLUSER, MYSQLPASSWORD from linked MySQL service
+#
+# Do NOT use jdbc:mysql://db:3306/... — "db" is Docker Compose only.
