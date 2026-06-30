@@ -46,7 +46,7 @@ git push -u origin main
 | Variable | Value |
 |----------|--------|
 | `SPRING_PROFILES_ACTIVE` | `railway` |
-| `JWT_SECRET` | any random string 32+ chars |
+| `JWT_SECRET` | any non-empty string (short values are SHA-256 hashed to meet 256-bit minimum) |
 | `MYSQLHOST` | `${{MySQL.MYSQLHOST}}` → resolves to `mysql.railway.internal` |
 | `MYSQLPORT` | `${{MySQL.MYSQLPORT}}` |
 | `MYSQLDATABASE` | `${{MySQL.MYSQLDATABASE}}` |
